@@ -170,6 +170,54 @@ curl -H "Authorization: Bearer $TOKEN" "https://www.strava.com/api/v3/athlete/ac
 curl -H "Authorization: Bearer $TOKEN" "https://www.strava.com/api/v3/activities/ACTIVITY_ID/streams?keys=latlng&key_by_type=true" | jq
 ```
 
+## Deployment to AWS
+
+This application can be deployed to AWS using several methods. The recommended approach is AWS Elastic Beanstalk, which provides a simple way to deploy and manage Node.js applications.
+
+### Deploying with AWS Elastic Beanstalk
+
+1. Install the EB CLI:
+   ```bash
+   pip install awsebcli
+   ```
+
+2. Initialize Elastic Beanstalk in your project:
+   ```bash
+   cd /path/to/lejog
+   eb init
+   ```
+   - Select your region
+   - Create a new application or select an existing one
+   - Select "Node.js" as the platform
+   - Choose the latest Node.js version
+
+3. Create a Procfile in your project root:
+   ```
+   web: node server.js
+   ```
+
+4. Create an environment and deploy:
+   ```bash
+   eb create lejog-production
+   ```
+
+5. Configure environment variables:
+   ```bash
+   eb setenv STRAVA_CLIENT_ID=your_client_id STRAVA_CLIENT_SECRET=your_client_secret STRAVA_REDIRECT_URI=https://your-eb-url.elasticbeanstalk.com/auth/callback LEJOG_START_DATE=2024-09-02 LEJOG_END_DATE=2024-09-15
+   ```
+
+6. Open the application:
+   ```bash
+   eb open
+   ```
+
+### Alternative Deployment Options
+
+- **AWS App Runner**: Container-based deployment with automatic scaling and HTTPS
+- **AWS Lambda with API Gateway**: Serverless approach (requires application refactoring)
+- **Amazon EC2**: Traditional virtual machine approach with more control
+
+For more details on these deployment options, see the AmazonQ.md file.
 ## Future Enhancements
 
 - Elevation profiles for each day's route

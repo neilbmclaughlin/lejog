@@ -76,3 +76,53 @@ With the foundation now solid, future development can focus on enhancing the use
 3. Photo integration
 4. Weather data overlay
 5. Progressive Web App capabilities
+## AWS Deployment Options
+
+Amazon Q helped identify and document the best deployment options for the LEJOG application:
+
+### AWS Elastic Beanstalk (Recommended)
+
+Elastic Beanstalk provides the best balance of simplicity and production readiness for Node.js applications:
+
+1. **Simple Deployment**: Upload your code and Elastic Beanstalk automatically handles deployment
+2. **Infrastructure Management**: Automatically handles capacity provisioning, load balancing, and health monitoring
+3. **Environment Configuration**: Easy configuration of environment variables through the CLI or console
+4. **Scaling**: Built-in auto-scaling capabilities to handle traffic fluctuations
+5. **Monitoring**: Integrated with CloudWatch for monitoring and alerts
+
+Implementation steps:
+```bash
+# Install the EB CLI
+pip install awsebcli
+
+# Initialize EB in your project
+eb init
+
+# Create a Procfile
+echo "web: node server.js" > Procfile
+
+# Deploy the application
+eb create lejog-production
+
+# Configure environment variables
+eb setenv STRAVA_CLIENT_ID=your_client_id STRAVA_CLIENT_SECRET=your_client_secret STRAVA_REDIRECT_URI=https://your-eb-url.elasticbeanstalk.com/auth/callback LEJOG_START_DATE=2024-09-02 LEJOG_END_DATE=2024-09-15
+```
+
+### Alternative Deployment Options
+
+1. **AWS App Runner**:
+   - Container-based deployment with automatic scaling
+   - Simpler than Elastic Beanstalk but less configurable
+   - Built-in HTTPS and continuous deployment from source code repositories
+
+2. **AWS Lambda with API Gateway**:
+   - Serverless approach with pay-per-use pricing
+   - Requires refactoring the application to work with Lambda handlers
+   - Best for applications with variable or unpredictable traffic
+
+3. **Amazon EC2**:
+   - Traditional virtual machine approach
+   - More control over the environment and configuration
+   - Requires more manual setup and maintenance
+
+The deployment recommendations were based on the application's architecture, requirements, and the goal of balancing simplicity with production readiness.
